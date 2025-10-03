@@ -1,0 +1,22 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "data": {
+          "fund_code": "基金代码",
+          "fund_name": "基金名称",
+          "avg_net_value": "平均净值",
+          "hold_shares": "持仓份额", 
+          "initial_cost": "初始成本",
+          "update_interval": "更新间隔(秒)"
+        }
+      }
+    },
+    "abort": {
+      "already_configured": "该基金代码已配置"
+    },
+    "error": {
+      "invalid_fund_code": "基金代码必须是6位数字"
+    }
+  }
+}
