@@ -12,19 +12,19 @@
 - 🕒 **定时更新** - 可配置的更新间隔，确保数据及时性
 - 🔍 **详细分类** - 数据按基础数据、净值数据和估算数据分类展示
 
-## 安装
+## 安装方法
+### 方法一：通过 HACS 安装（推荐）
+1. 确保已安装 [HACS](https://hacs.xyz/)
+2. 在 HACS 的 "Integrations" 页面，点击右上角的三个点菜单，选择 "Custom repositories"
+3. 在弹出窗口中添加仓库地址：https://github.com/lambilly/hass_daily_fund/ ，类别选择 "Integration"
+4. 在 HACS 中搜索 "每日基金"
+5. 点击下载
+6. 重启 Home Assistant
 
-### 使用 HACS（推荐）
-
-1. 在 HACS 中，点击「集成」
-2. 点击右下角的「浏览并下载仓库」
-3. 搜索「每日基金」并下载
-4. 重启 Home Assistant
-
-### 手动安装
-
-1. 将 `daily_fund` 文件夹复制到 `config/custom_components` 目录下
-2. 重启 Home Assistant
+### 方法二：手动安装
+1. 下载本集成文件
+2. 将 `custom_components/daily_fund` 文件夹复制到您的 Home Assistant 配置目录中的 `custom_components` 文件夹内
+3. 重启 Home Assistant
 
 ## 配置
 
