@@ -1,0 +1,12 @@
+{
+  "domain": "daily_fund",
+  "name": "每日基金",
+  "codeowners": ["@lambilly"],
+  "version": "1.0.0",
+  "config_flow": true,
+  "documentation": "https://github.com/lambilly/daily_fund",
+  "issue_tracker": "https://github.com/lambilly/daily_fund/issues",
+  "requirements": ["aiohttp"],
+  "iot_class": "cloud_polling",
+  "translations": ["zh-Hans"]
+}
