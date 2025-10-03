@@ -1,4 +1,6 @@
-# 每日基金集成
+# 每日基金 HomeAssistant 集成
+
+[![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/integration)
 
 通过 Home Assistant 监控您的基金投资情况，实时获取基金估值和收益数据。
 
