@@ -59,8 +59,8 @@
 
 如果您遇到任何问题或有建议，请通过以下方式联系：
 
-- [提交 Issue](https://github.com/lambilly/daily_fund/issues)
-- [查看文档](https://github.com/lambilly/daily_fund)
+- [提交 Issue](https://github.com/lambilly/hass_daily_fund/issues)
+- [查看文档](https://github.com/lambilly/hass_daily_fund)
 
 ## 许可证
 
