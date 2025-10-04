@@ -14,8 +14,14 @@ from .const import (
     CONF_HOLD_SHARES,
     CONF_INITIAL_COST,
     CONF_UPDATE_INTERVAL,
+    CONF_TRADING_INTERVAL,
+    CONF_NET_VALUE_INTERVAL,
     DEFAULT_SCAN_INTERVAL,
+    DEFAULT_TRADING_INTERVAL,
+    DEFAULT_NET_VALUE_INTERVAL,
+    DEFAULT_NON_TRADING_INTERVAL,
 )
+
 
 class DailyFundConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     """Handle a config flow for Daily Fund."""
@@ -49,9 +55,13 @@ class DailyFundConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             vol.Optional(CONF_HOLD_SHARES, default=0): vol.Coerce(float),
             vol.Optional(CONF_INITIAL_COST, default=0): vol.Coerce(float),
             vol.Optional(
-                CONF_UPDATE_INTERVAL, 
-                default=DEFAULT_SCAN_INTERVAL
-            ): vol.All(vol.Coerce(int), vol.Range(min=60)),
+                CONF_TRADING_INTERVAL, 
+                default=DEFAULT_TRADING_INTERVAL
+            ): vol.All(vol.Coerce(int), vol.Range(min=60, max=3600)),
+            vol.Optional(
+                CONF_NET_VALUE_INTERVAL, 
+                default=DEFAULT_NET_VALUE_INTERVAL
+            ): vol.All(vol.Coerce(int), vol.Range(min=300, max=3600)),
         })
 
         return self.async_show_form(
@@ -64,6 +74,7 @@ class DailyFundConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 "avg_net_value": "平均净值",
                 "hold_shares": "持仓份额",
                 "initial_cost": "初始成本",
-                "update_interval": "更新间隔(秒)"
+                "trading_interval": "交易时段更新间隔(秒, 1-60分钟)",
+                "net_value_interval": "净值公布时段更新间隔(秒)"
             }
         )

@@ -1,10 +1,10 @@
-config/custom_components/daily_fund/
+daily_fund/
+├── translations/
+│   └── zh-Hans.json
 ├── __init__.py
 ├── manifest.json
-├── sensor.py
-├── const.py
-├── icon.png
-├── coordinator.py
 ├── config_flow.py
-└── translations/
-    └── zh-Hans.json
+├── const.py
+├── coordinator.py
+├── sensor.py
+└── icon.png

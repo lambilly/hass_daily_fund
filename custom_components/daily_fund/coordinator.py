@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import logging
-from datetime import timedelta
+from datetime import timedelta, datetime, time
 import aiohttp
 import json
 import re
@@ -17,7 +17,19 @@ from .const import (
     CONF_AVG_NET_VALUE,
     CONF_HOLD_SHARES,
     CONF_INITIAL_COST,
-    CONF_UPDATE_INTERVAL,
+    CONF_TRADING_INTERVAL,
+    CONF_NET_VALUE_INTERVAL,
+    DEFAULT_TRADING_INTERVAL,
+    DEFAULT_NET_VALUE_INTERVAL,
+    DEFAULT_NON_TRADING_INTERVAL,
+    TRADING_HOURS_AM_START,
+    TRADING_HOURS_AM_START_MINUTE,
+    TRADING_HOURS_AM_END,
+    TRADING_HOURS_AM_END_MINUTE,
+    TRADING_HOURS_PM_START,
+    TRADING_HOURS_PM_END,
+    NET_VALUE_PUBLISH_START,
+    NET_VALUE_PUBLISH_END,
     API_URL_TEMPLATE
 )
 
@@ -28,14 +40,19 @@ class DailyFundCoordinator(DataUpdateCoordinator):
 
     def __init__(self, hass: HomeAssistant, entry: ConfigEntry) -> None:
         """Initialize."""
-        # 获取更新间隔，默认为10分钟
-        update_interval = entry.data.get(CONF_UPDATE_INTERVAL, 600)
+        # 获取智能更新间隔配置
+        self.trading_interval = entry.data.get(CONF_TRADING_INTERVAL, DEFAULT_TRADING_INTERVAL)
+        self.net_value_interval = entry.data.get(CONF_NET_VALUE_INTERVAL, DEFAULT_NET_VALUE_INTERVAL)
+        self.non_trading_interval = DEFAULT_NON_TRADING_INTERVAL
+        
+        # 初始使用默认间隔
+        initial_interval = self._calculate_optimal_interval()
         
         super().__init__(
             hass,
             _LOGGER,
             name=entry.data[CONF_FUND_NAME],
-            update_interval=timedelta(seconds=update_interval),
+            update_interval=timedelta(seconds=initial_interval),
         )
         
         self.entry = entry
@@ -45,9 +62,57 @@ class DailyFundCoordinator(DataUpdateCoordinator):
         self.hold_shares = float(entry.data.get(CONF_HOLD_SHARES, 0))
         self.initial_cost = float(entry.data.get(CONF_INITIAL_COST, 0))
 
+    def _calculate_optimal_interval(self) -> int:
+        """Calculate optimal update interval based on current time."""
+        now = datetime.now()
+        current_time = now.time()
+        
+        # 检查是否在交易时段内
+        is_trading_hours = self._is_trading_hours(current_time)
+        
+        # 检查是否在净值公布时段内
+        is_net_value_publish_hours = self._is_net_value_publish_hours(current_time)
+        
+        # 确定更新间隔
+        if is_trading_hours:
+            return self.trading_interval
+        elif is_net_value_publish_hours:
+            return self.net_value_interval
+        else:
+            return self.non_trading_interval
+
+    def _is_trading_hours(self, current_time: time) -> bool:
+        """Check if current time is within trading hours."""
+        # 上午交易时段: 9:30 - 11:30
+        am_start = time(TRADING_HOURS_AM_START, TRADING_HOURS_AM_START_MINUTE)
+        am_end = time(TRADING_HOURS_AM_END, TRADING_HOURS_AM_END_MINUTE)
+        
+        # 下午交易时段: 13:00 - 15:00
+        pm_start = time(TRADING_HOURS_PM_START, 0)
+        pm_end = time(TRADING_HOURS_PM_END, 0)
+        
+        return (am_start <= current_time <= am_end) or (pm_start <= current_time <= pm_end)
+
+    def _is_net_value_publish_hours(self, current_time: time) -> bool:
+        """Check if current time is within net value publish hours."""
+        publish_start = time(NET_VALUE_PUBLISH_START, 0)
+        publish_end = time(NET_VALUE_PUBLISH_END, 0)
+        
+        return publish_start <= current_time <= publish_end
+
     async def _async_update_data(self):
         """Update data via API."""
         try:
+            # 在每次更新前重新计算最优间隔
+            new_interval = self._calculate_optimal_interval()
+            if self.update_interval != timedelta(seconds=new_interval):
+                self.update_interval = timedelta(seconds=new_interval)
+                _LOGGER.debug(
+                    "Updated refresh interval to %s seconds for fund %s",
+                    new_interval,
+                    self.fund_code
+                )
+            
             async with aiohttp.ClientSession() as session:
                 url = API_URL_TEMPLATE.format(self.fund_code)
                 async with session.get(url, timeout=10) as response:
