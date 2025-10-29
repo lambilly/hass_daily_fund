@@ -9,5 +9,4 @@
   "requirements": ["aiohttp"],
   "iot_class": "cloud_polling",
   "translations": ["zh-Hans"]
-
 }
