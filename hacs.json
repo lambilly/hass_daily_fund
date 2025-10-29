@@ -1,10 +1,10 @@
-
 {
   "name": "每日基金",
   "render_readme": true,
   "homeassistant": "2023.8.0",
-  "zip_release": true,
-  "country": ["CN"],
-  "domains": ["sensor"],
-  "iot_class": "Cloud Polling"
+  "domain": "daily_fund",
+  "iot_class": "cloud_polling",
+  "zip_release": false,
+  "filename": "daily_fund",
+  "hide_default_branch": false
 }
