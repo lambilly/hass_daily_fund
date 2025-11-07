@@ -89,3 +89,10 @@
 ## 许可证
 
 MIT License
+## 捐赠支持
+
+如果您觉得这个集成对您有帮助，欢迎扫描下方的二维码进行捐赠，以支持项目的持续开发和维护：
+
+|    |支付宝 | 微信 |
+|----|--------|------|
+|扫一扫|![Image](https://github.com/user-attachments/assets/a6d0872c-d14b-4534-ba35-c8e9daeb2849)|![Image](https://github.com/user-attachments/assets/a0bcbb66-978e-4f51-9caf-1c3375155867)|
