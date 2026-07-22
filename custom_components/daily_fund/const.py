@@ -29,5 +29,3 @@ TRADING_HOURS_PM_END = 15
 # 净值公布时段
 NET_VALUE_PUBLISH_START = 18  # 18:00开始
 NET_VALUE_PUBLISH_END = 22    # 22:00结束
-
-API_URL_TEMPLATE = "https://fundgz.1234567.com.cn/js/{}.js"
