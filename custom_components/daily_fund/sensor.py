@@ -55,7 +55,7 @@ class DailyFundSensor(SensorEntity):
         if self.coordinator.data is None:
             return None
             
-        return self.coordinator.data.get("net_value_date")  # 显示净值日期
+        return self.coordinator.data.get("net_value_date")
 
     @property
     def native_unit_of_measurement(self):
@@ -75,8 +75,8 @@ class DailyFundSensor(SensorEntity):
             "基金代码": data.get("fund_code"),
             "基金名称": data.get("fund_name"),
             "基金全称": data.get("fund_full_name"),
-            "涨跌净值": data.get("rise_fall_net_value"),  # 涨跌净值放在涨跌图标之前
-            "涨跌图标": data.get("rise_fall_icon"),  # 涨跌图标
+            "涨跌净值": data.get("rise_fall_net_value"),  # 已改为单位净值-前天净值
+            "涨跌图标": data.get("rise_fall_icon"),
             "平均净值": data.get("avg_net_value"),
             "持仓份额": data.get("hold_shares"),
             "初始成本": data.get("initial_cost"),
@@ -84,6 +84,12 @@ class DailyFundSensor(SensorEntity):
             # 净值数据
             "净值日期": data.get("net_value_date"),
             "单位净值": data.get("actual_net_value"),
+            "前天日期": data.get("prev_net_value_date"),   # 改名
+            "前天净值": data.get("prev_net_value"),
+            "前天市值": data.get("prev_value"),
+            "前天收益": data.get("prev_profit"),
+            "前天收益率": data.get("prev_profit_rate"),
+            "前天增长率": data.get("prev_growth_rate"),
             "持仓市值": data.get("actual_value"),
             "持仓收益": data.get("actual_profit"),
             "持仓收益率": data.get("actual_profit_rate"),
